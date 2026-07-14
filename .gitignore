@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.log
+*.local
+.env
+.env.*
+!.env.example
+.vite/
+.edge-*/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+smoke-out*.txt
+*.zip
