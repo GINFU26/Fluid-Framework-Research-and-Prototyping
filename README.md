@@ -9,7 +9,7 @@
 
 | Resource | Link |
 |---|---|
-| Live demo (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground&doc=fluid-open-demo-0603) |
+| Live demo (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground) |
 | Competitive analysis | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) |
 | Prototype | [prototype/](prototype/) · [prototype/README.md](prototype/README.md) |
 
@@ -171,4 +171,4 @@ The prototype makes the asymmetry concrete: the merge is the straightforward par
 | **Competitive analysis** | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) | The complete decision record: context, requirements, evaluation model, per-framework comparison, prototype evidence, and investment priorities |
 | **Prototype source** | [prototype/](prototype/) | React + TypeScript client, Automerge state, WebSocket relay, AI proxy, review workflows, semantic-conflict logic, and validation scripts |
 | **Prototype guide** | [prototype/README.md](prototype/README.md) | Architecture, setup, AI-backend configuration, and evidence boundaries |
-| **Live demo** (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground&doc=fluid-open-demo-0603) | The deployed canvas: shared rooms, presence, AI proposals, and human-controlled commit |
+| **Live demo** (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground) | The deployed canvas: shared rooms, presence, AI proposals, and human-controlled commit |
