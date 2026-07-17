@@ -73,7 +73,7 @@ The real-time collaboration ecosystem has evolved quickly in recent years: each 
 | **Liveblocks** | Hosted service wrapping Yjs | Packaging, presence, and developer velocity | Faster packaging is not a stronger underlying mechanism |
 | **SharedTree** (Fluid) | Typed tree with schema, transactions, and branch/rebase | The full loop — a typed node to target, constraints that keep an edit valid, and review before commit | The structure the scenario needs is native, not something the product team must build and own |
 
-At the mechanism layer, baseline collaboration is broadly achievable — but for a durable, reviewable, AI-editable artifact, SharedTree is the closest fit, because typed and constrained structure is native rather than something the product team must build on top.
+At the mechanism layer, baseline collaboration is broadly achievable, so the strongest case for SharedTree is not that a central service is always better. It is that service ordering, optimistic local edits, transactions, schema, and structured state form a coherent model for governed Microsoft artifacts — and for human–agent workflows, that coherence is what matters. An AI proposal can target a node, confirm the referenced state still exists, produce a reviewable change, and commit only after human acceptance: one continuous loop, native to the model rather than assembled on top of a merge engine.
 
 ---
 
@@ -154,11 +154,8 @@ Automerge supplies replicated state, merge, and convergence. Everything that mad
 
 ### What the build revealed
 
-| Observation | Effect on the decision |
-|---|---|
-| An external CRDT clears the client-layer bar quickly | The external path is credible and deserves serious evaluation |
-| Convergence is only the baseline; undo, presence, reset, longevity, and review boundaries remain real work | A comparison that stops at "does it merge?" understates adoption cost |
-| The strongest AI behavior was application logic, not CRDT capability | AI proposal, review, and semantic resolution are product architecture, and should be evaluated as such |
-| Persisting CRDT bytes is storage, not a service | A SharePoint round-trip would not remove service ownership, coordination, projection, recovery, or governance |
+The prototype shows that a third-party CRDT can produce credible client-side collaboration and AI-review behavior quickly. That matters because the external path is not theoretical — the comparison has to be taken seriously, not dismissed. But the build also exposes the limits: convergence is only the baseline; undo, presence, reset, longevity, and review boundaries are still real application work, and persisting CRDT bytes is storage, not a live service with ordering, recovery, projection, and governance.
+
+The more durable lesson is a product pattern: the right way for AI to touch a shared artifact is private proposal, human review, accepted commit, and visible source and decision context — not direct mutation. That pattern is independent of the engine, and it is exactly what Fluid's typed, transactional, reviewable model makes native.
 
 The prototype makes the asymmetry concrete: the merge is the straightforward part; the trusted product path is the real replacement bar.
