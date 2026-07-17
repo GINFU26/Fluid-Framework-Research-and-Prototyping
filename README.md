@@ -7,11 +7,20 @@
 
 **Conclusion —** keep Fluid v2 / SharedTree as the default. Across the two layers that decide the outcome — the collaboration mechanism at the client, and the trusted platform beneath it — no external framework offers an advantage large enough to justify rebuilding what Fluid already provides. A deployed prototype backs it with evidence rather than assertion.
 
-| Resource | Link |
-|---|---|
-| Live demo (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground) |
-| Competitive analysis | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) |
-| Prototype | [prototype/](prototype/) · [prototype/README.md](prototype/README.md) |
+| Resource | Link | What's in it |
+|---|---|---|
+| **Live AI collaborative canvas** | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground) | The deployed canvas: shared rooms, presence, AI proposals, and human-controlled commit |
+| **Competitive analysis** | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) | The complete decision record: context, requirements, evaluation model, per-framework comparison, prototype evidence, and investment priorities |
+| **Prototype source** | [prototype/](prototype/) | React + TypeScript client, Automerge state, WebSocket relay, AI proxy, review workflows, semantic-conflict logic, and validation scripts |
+| **Prototype guide** | [prototype/README.md](prototype/README.md) | Architecture, setup, AI-backend configuration, and evidence boundaries |
+
+---
+
+## The question
+
+For a new collaborative AI-artifact experience, should Fluid v2 / SharedTree remain the default — or does an external framework (Yjs, Automerge, Loro, or Liveblocks) create enough advantage to justify a different platform path?
+
+To answer it, I pair a competitive analysis of Fluid against the leading external frameworks with a counterfactual prototype — an AI-collaborative artifact built on an external mechanism — that validates the comparison in working code, not just on paper.
 
 ---
 
@@ -28,15 +37,7 @@ That makes the choice of foundation a strategic decision, not an implementation 
 
 ---
 
-## The question
-
-For a new collaborative AI-artifact experience, should Fluid v2 / SharedTree remain the default — or does an external framework (Yjs, Automerge, Loro, or Liveblocks) create enough advantage to justify a different platform path?
-
-The most rigorous way to validate a default is to try to displace it. This study does exactly that, in analysis and in working code, and lets the real cost of replacement drive the conclusion.
-
----
-
-## How the decision was framed
+## Evaluation Model
 
 A product team does not ship a merge algorithm; it ships a complete system. The right unit of comparison is therefore not the library but the entire adoption path:
 
@@ -161,14 +162,3 @@ Automerge supplies replicated state, merge, and convergence. Everything that mad
 | Persisting CRDT bytes is storage, not a service | A SharePoint round-trip would not remove service ownership, coordination, projection, recovery, or governance |
 
 The prototype makes the asymmetry concrete: the merge is the straightforward part; the trusted product path is the real replacement bar.
-
----
-
-## Artifacts
-
-| Artifact | Location | Contents |
-|---|---|---|
-| **Competitive analysis** | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) | The complete decision record: context, requirements, evaluation model, per-framework comparison, prototype evidence, and investment priorities |
-| **Prototype source** | [prototype/](prototype/) | React + TypeScript client, Automerge state, WebSocket relay, AI proxy, review workflows, semantic-conflict logic, and validation scripts |
-| **Prototype guide** | [prototype/README.md](prototype/README.md) | Architecture, setup, AI-backend configuration, and evidence boundaries |
-| **Live demo** (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground) | The deployed canvas: shared rooms, presence, AI proposals, and human-controlled commit |
