@@ -113,9 +113,9 @@ The strategic conclusion is straightforward: the demo is easy to reproduce; the 
 
 To keep the recommendation grounded in evidence rather than assertion, the study includes a deployed prototype: a collaborative canvas built on **Automerge** — the strongest external counterfactual — and hosted on Azure App Service. It follows the mechanism argument in two steps: first confirm that an external engine can reproduce the baseline, then push past the baseline into the part that is still unsolved — durable human–AI collaboration.
 
-**See it in action —** a short walkthrough of the baseline collaboration and the two human–AI patterns:
+**See it in action —** a short walkthrough of the baseline collaboration and the two human–AI patterns ([2-minute demo on Loom](https://www.loom.com/share/ce30b6bff6aa4076a5d196ad625add41)):
 
-[![Prototype walkthrough on Loom](https://cdn.loom.com/sessions/thumbnails/ce30b6bff6aa4076a5d196ad625add41-with-play.gif)](https://www.loom.com/share/ce30b6bff6aa4076a5d196ad625add41)
+[![Prototype walkthrough — click to watch on Loom](docs/demo.png)](https://www.loom.com/share/ce30b6bff6aa4076a5d196ad625add41)
 
 ### Step 1 — Confirm the baseline: external mechanisms reproduce human-to-human collaboration
 
