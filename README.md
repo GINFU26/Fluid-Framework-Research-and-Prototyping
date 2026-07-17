@@ -1,103 +1,174 @@
-# Fluid Framework Research and Prototyping
+# Fluid Framework — Research & Prototyping
 
-**Project owner:** Gin Fu<br>
-**Project type:** Product research and hands-on prototyping
+**A product-decision study: should Fluid v2 / SharedTree remain the default collaboration foundation for Microsoft's AI-era artifacts?**
 
-This project asks a counterfactual question:
+**Owner:** Gin Fu — product framing and decision, plus the engineering prototype that tests it<br>
+**Scope:** Fluid v2 / SharedTree, evaluated against Yjs, Automerge, Loro, and Liveblocks — for durable artifacts that people and AI agents edit together
 
-> If Fluid Framework did not exist, how would Microsoft build a collaborative canvas where people and AI agents work on the same durable artifact?
+**Conclusion —** keep Fluid v2 / SharedTree as the default. Across the two layers that decide the outcome — the collaboration mechanism at the client, and the trusted platform beneath it — no external framework offers an advantage large enough to justify rebuilding what Fluid already provides. A deployed prototype backs it with evidence rather than assertion.
 
-I pressure-tested the external path instead of starting from the assumption that Fluid should remain the default. The work combines a decision-oriented comparison of Fluid v2 / SharedTree against Yjs, Automerge, Loro, and Liveblocks with a working Automerge prototype for real-time collaboration and human-reviewed AI edits.
-
-## Executive conclusion
-
-For the scoped Microsoft product scenario, keep Fluid v2 / SharedTree as the default collaboration foundation.
-
-External frameworks provide meaningful advantages at the mechanism and client layer: Yjs in collaborative text and editor integrations, Automerge in local-first history and merge reasoning, Loro in structural conflict semantics, and Liveblocks in packaging and developer experience. None currently provides a broad enough advantage to offset the Microsoft product path that would still need to be built around it: identity, permissions, trusted storage, governance, recovery, search and discovery, regional deployment, and long-running service ownership.
-
-The recommendation is conditional rather than absolute. External frameworks are useful design pressure, and the decision should be reopened if collaborative text, AI-editing patterns, reliability, integration reuse, or deep-offline requirements materially change the trade-off.
-
-## Why this decision matters
-
-AI is moving from one-time chat responses into durable work artifacts such as pages, canvases, plans, briefs, and tasks. Once people and agents edit the same artifact, collaboration infrastructure determines more than synchronization. It defines:
-
-1. What structured state an AI can target.
-2. How people inspect and approve AI edits.
-3. How the artifact persists, evolves, and recovers.
-4. How identity, permissions, governance, and storage apply.
-5. How ordering, conflict behavior, and state transitions remain understandable.
-
-The project therefore compares complete adoption paths, not merge algorithms in isolation:
-
-| Layer | Decision question |
+| Resource | Link |
 |---|---|
-| Mechanism / client layer | What collaboration behavior can the application deliver? |
-| Product / platform layer | What must be integrated, deployed, governed, and operated for production use? |
+| Live demo (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground&doc=fluid-open-demo-0603) |
+| Competitive analysis | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) |
+| Prototype | [prototype/](prototype/) · [prototype/README.md](prototype/README.md) |
 
-## What I built
+---
 
-### Research
+## Why this decision matters now
 
-The analysis defines the decision requirements, compares four external frameworks against the replacement bar, connects the comparison to observed prototype behavior, and records the conditions that would change the recommendation.
+In the AI era, collaboration is no longer only people synchronizing edits. It is people and agents co-editing a durable artifact — a page, a canvas, a plan, a task list — that keeps evolving after the model responds. Once an agent can change the same object a person depends on, the collaboration foundation stops being plumbing: it becomes the boundary of what AI can safely edit, what people can trust, and what the product can govern and recover.
 
-Read [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md).
+That makes the choice of foundation a strategic decision, not an implementation detail. For the AI-artifact scenario, four requirements weigh most — and they are precisely the ones that are expensive to add later:
 
-### Prototype
+- **Structured, targetable state** — AI addresses a section, a task, or an object, not a flat blob of text.
+- **Reviewable edits** — propose, review, commit; nothing an agent writes lands unseen.
+- **Durable lifecycle** — the artifact persists, evolves, and recovers beyond a single session.
+- **Microsoft integration** — identity, storage, governance, audit, search, and compliance all apply.
 
-The prototype is a React and Automerge application that demonstrates:
+---
 
-- A shared canvas with sticky notes, shapes, ink, presence, undo/redo, local persistence, and multi-user synchronization.
-- A shared long-form text surface with remote carets and 1,000-word and 10,000-word stress samples.
-- Private AI proposals that remain outside shared state until a person accepts them.
-- Review controls for accept, reject, partial accept, and reject-and-revise feedback.
-- Cross-note semantic review and same-note live-conflict preview with human-controlled commit.
-- A small WebSocket relay and optional server-side AI proxy.
+## The question
 
-The prototype supports the client-layer finding: an external CRDT can produce credible collaboration and AI-review behavior quickly. It does not establish Microsoft production readiness, durable cloud storage, enterprise identity, compliance, or service ownership.
+For a new collaborative AI-artifact experience, should Fluid v2 / SharedTree remain the default — or does an external framework (Yjs, Automerge, Loro, or Liveblocks) create enough advantage to justify a different platform path?
 
-See [prototype/README.md](prototype/README.md) for architecture, setup, and evidence boundaries.
+The most rigorous way to validate a default is to try to displace it. This study does exactly that, in analysis and in working code, and lets the real cost of replacement drive the conclusion.
 
-## Key findings
+---
 
-| Option | Strongest pressure on Fluid | Why it did not replace Fluid in this analysis |
+## How the decision was framed
+
+A product team does not ship a merge algorithm; it ships a complete system. The right unit of comparison is therefore not the library but the entire adoption path:
+
+> **Fluid**, plus the Microsoft integration it already has — versus an **external framework**, plus the equivalent integration that would still have to be built.
+
+Two principles govern the evaluation:
+
+- **Mechanism value** — the collaboration and AI behavior an engine actually enables at the application layer.
+- **The replacement bar** — an external framework should displace Fluid only if its mechanism advantage is large enough to justify rebuilding the Microsoft platform beneath it.
+
+Every candidate is judged on two layers, and must clear both.
+
+| Layer | The question it answers | What the evidence must show |
 |---|---|---|
-| Yjs | Collaborative text, editor ecosystem, public adoption | Its strongest advantage is narrower than the multi-object, typed, governed artifact scenario. |
-| Automerge | Local-first behavior, history, understandable document merge | The prototype proves client feasibility, while most review and semantic workflows are application logic built above Automerge. |
-| Loro | Move/delete and other structural conflict semantics | The evidence is strongest for specific conflict cases rather than the complete product and platform path. |
-| Liveblocks | Time-to-first-feature, collaboration packaging, public AI narrative | Its primary advantage is productized developer experience, not a clearly stronger foundation for typed, governed artifacts. |
+| **Mechanism / client** | What can the application deliver? | Data-model fit, merge behavior, history, text, presence, AI review, developer experience |
+| **Product / platform** | What must Microsoft build, trust, deploy, and operate? | Identity, storage, governance, recovery, search projection, regional deployment, reliability, ownership |
 
-The prototype also produced a product lesson independent of framework choice:
+The decision question is not *"which engine has more features"* but *"which complete path produces the strongest product outcome at an acceptable cost."*
 
-> AI edits should follow a proposal, review, and commit workflow rather than mutating shared state directly.
+---
 
-## Repository structure
+## The mechanism layer: strong engines, narrow advantages
 
-```text
-.
-|-- README.md
-|-- research/
-|   `-- Fluid-Framework-Analysis.md
-`-- prototype/
-	|-- README.md
-	|-- src/
-	|-- scripts/
-	|-- public/
-	|-- server.mjs
-	`-- package.json
+Fluid v2's collaboration mechanism is **SharedTree**, a typed-tree data model in which the artifact is structured, schema-constrained state that both people and AI can target — not flat text. It is the incumbent this study tries to evaluate.
+
+The real-time collaboration ecosystem has evolved quickly in recent years: each modern CRDT engine below can reproduce the baseline — multi-user sync, conflict-free merge, presence, and offline. So the real mechanism question is not *"can an external engine do live collaboration?"* — they can — but *"which mechanism best fits a durable, reviewable, AI-editable artifact?"* On that narrower question each external engine leads in a single dimension, while SharedTree is built for the whole of it.
+
+| Engine | What it is | Where it leads | Why that lead is too narrow to switch on |
+|---|---|---|---|
+| **Yjs** | Text-first CRDT with mature editor bindings | Collaborative text and the editor ecosystem | The scenario also needs typed objects, review state, and AI-addressable nodes — outside Yjs's center of gravity |
+| **Automerge** | Local-first document CRDT | History and merge across clients | On its own, no typed tree, schema, or constraints for reviewable AI edits |
+| **Loro** | CRDT with a genuinely movable tree | Move and delete conflict handling | A single dimension of the problem, not the whole scenario |
+| **Liveblocks** | Hosted service wrapping Yjs | Packaging, presence, and developer velocity | Faster packaging is not a stronger underlying mechanism |
+| **SharedTree** (Fluid) | Typed tree with schema, transactions, and branch/rebase | The full loop — a typed node to target, constraints that keep an edit valid, and review before commit | The structure the scenario needs is native, not something the product team must build and own |
+
+At the mechanism layer, baseline collaboration is broadly achievable — but for a durable, reviewable, AI-editable artifact, SharedTree is the closest fit, because typed and constrained structure is native rather than something the product team must build on top.
+
+---
+
+## The platform layer: where the real cost lives
+
+An external CRDT delivers the visible surface of collaboration — real-time sync, conflict-free merge, local persistence, and presence. That surface is necessary, but it is not what makes collaboration trustworthy inside a Microsoft product.
+
+The cost that decides the outcome sits beneath that surface: the platform a production experience cannot ship without.
+
+- Entra identity and permissions, acting on behalf of real users and policies
+- SharePoint / ODSP storage, sharing, sensitivity labels, and audit
+- Compliance, eDiscovery, and search projection
+- Recovery, regional deployment, and a live service with clear ownership
+
+Fluid already carries this weight; an external framework would have to rebuild it. Persisting CRDT bytes to a file is storage — not a live collaboration service with ordering, recovery, projection, and governance. This asymmetry — modest, visible mechanism value above the line against substantial, hidden platform cost below it — is what sets the replacement bar high.
+
+---
+
+## Recommendation
+
+**Keep Fluid v2 / SharedTree as the default** for Microsoft-internal collaborative canvas and AI-artifact scenarios.
+
+No external mechanism advantage found in this study is large enough to offset the Microsoft integration that would still have to be built. Fluid leads on both layers: its structured state is native at the mechanism layer, and identity, storage, and compliance are already integrated at the platform layer.
+
+External frameworks are not strawmen — they are useful design pressure, and they mark precisely where Fluid should keep investing:
+
+- A first-class rich-text path (Yjs's strength)
+- A canonical, documented pattern for how Copilot proposes and commits edits to a Fluid artifact
+- Faster first-feature developer experience (Liveblocks's strength)
+- Stronger history and recovery, and explicit structural-conflict handling (Automerge's and Loro's strengths)
+
+The strategic conclusion is straightforward: the demo is easy to reproduce; the trusted product path is not — and that path is Fluid's durable advantage.
+
+---
+
+## Evidence: a working counterfactual
+
+To keep the recommendation grounded in evidence rather than assertion, the study includes a deployed prototype: a collaborative canvas built on **Automerge** — the strongest external counterfactual — and hosted on Azure App Service. It follows the mechanism argument in two steps: first confirm that an external engine can reproduce the baseline, then push past the baseline into the part that is still unsolved — durable human–AI collaboration.
+
+### Step 1 — Confirm the baseline: external mechanisms reproduce human-to-human collaboration
+
+The first step tests whether the external path is real: multi-user, real-time collaboration with no Fluid server. Each browser holds an Automerge document; a stateless WebSocket relay only forwards messages, while merge and convergence happen on the client. On that base the prototype implements the surface expected of a live session:
+
+- Shared sticky notes, shapes, ink, and a long-form text surface
+- Presence, live cursors, selections, and remote carets
+- Multi-user and multi-tab convergence, local persistence, offline and reconnect, and room reset
+- Inverse-operation undo/redo that does not revert another user's concurrent edit
+
+**Finding —** an external CRDT plus a thin relay reproduces baseline human-to-human collaboration convincingly. That is the crux of the mechanism argument: because live sync is now reproducible, it cannot be the deciding advantage. The decision has to be made where the difficulty still lives — durable human–AI collaboration, and the platform beneath it.
+
+### Step 2 — Push into the frontier: durable human–AI collaboration
+
+Baseline sync is solved. The open problem is how a person and an agent can co-own a durable artifact over time without the AI silently overwriting shared state. To explore that frontier, the prototype implements two forward-looking patterns, each pointing at a capability the next generation of AI products will need.
+
+**1. A reviewable proposal that remembers, not blind trust.** The AI branches a private draft from the shared state, then refines it from your local feedback before anything lands — nothing the agent writes reaches the shared artifact until a person accepts it.
+*Why it matters —* every rejection teaches the next proposal, so the agent keeps contributing to a shared artifact without ever silently overwriting it — and review stays sustainable instead of exhausting. It maps directly onto SharedTree's branch/rebase and transactions.
+
+**2. A proactive teammate, not an order-taker.** An LLM judge continuously watches the artifact for multi-user conflicts — where different users' edits semantically contradict each other, or a note drifts against its own earlier state — then, in one click, drafts a source-traced merge for human review.
+*Why it matters —* most AI editing today waits to be told what to do. An agent that notices problems on its own, and cites its sources so a person can trust and decide in seconds, is how AI begins to carry real weight in a long-lived, shared artifact.
+
+**Finding —** the durable pattern for human–AI collaboration is *private proposal → human review → accepted commit*, and the higher-value role for AI is proactive, source-traced, and reviewable. Both capabilities live in application logic above the CRDT — which is exactly the point: they are the structured, reviewable behaviors SharedTree makes native, and that an external engine would have to rebuild from scratch.
+
+### Architecture
+
+```mermaid
+flowchart LR
+    A[Browser A<br/>Automerge document] <-->|Document + presence| R[WebSocket relay]
+    B[Browser B<br/>Automerge document] <-->|Document + presence| R
+    A --> C[Private AI proposal state]
+    C --> H[Human review gate]
+    H -->|Accept| A
+    H -->|Reject or revise| C
+    C <--> S[Server-side AI proxy]
+    S <--> L[Model endpoint]
 ```
 
-## Run the prototype
+Automerge supplies replicated state, merge, and convergence. Everything that made the experience good — the relay topology, presence, private proposal state, the structured edit contract, the review workflow, feedback memory, and semantic detection — is application architecture above Automerge, not native to it.
 
-```powershell
-cd prototype
-npm ci
-npm run dev:all
-```
+### What the build revealed
 
-Open `http://localhost:5173/?demo=playground` and join the same room from another tab or browser to test collaboration.
+| Observation | Effect on the decision |
+|---|---|
+| An external CRDT clears the client-layer bar quickly | The external path is credible and deserves serious evaluation |
+| Convergence is only the baseline; undo, presence, reset, longevity, and review boundaries remain real work | A comparison that stops at "does it merge?" understates adoption cost |
+| The strongest AI behavior was application logic, not CRDT capability | AI proposal, review, and semantic resolution are product architecture, and should be evaluated as such |
+| Persisting CRDT bytes is storage, not a service | A SharePoint round-trip would not remove service ownership, coordination, projection, recovery, or governance |
 
-AI generation is optional. Without an AI backend, the collaboration features still run and the interface explains that AI generation is unavailable. See the prototype documentation for supported server-side environment variables.
+The prototype makes the asymmetry concrete: the merge is the straightforward part; the trusted product path is the real replacement bar.
 
-## Evidence boundary
+---
 
-This repository is a public portfolio edition of the project. It contains public-source research and sanitized prototype code. It does not include raw stakeholder notes, internal meeting material, confidential roadmap details, internal metrics, credentials, or production service configuration. The recommendation is the project owner's research judgment, not an official Microsoft position.
+## Artifacts
+
+| Artifact | Location | Contents |
+|---|---|---|
+| **Competitive analysis** | [research/Fluid-Framework-Analysis.md](research/Fluid-Framework-Analysis.md) | The complete decision record: context, requirements, evaluation model, per-framework comparison, prototype evidence, and investment priorities |
+| **Prototype source** | [prototype/](prototype/) | React + TypeScript client, Automerge state, WebSocket relay, AI proxy, review workflows, semantic-conflict logic, and validation scripts |
+| **Prototype guide** | [prototype/README.md](prototype/README.md) | Architecture, setup, AI-backend configuration, and evidence boundaries |
+| **Live demo** (Azure) | [Open the showcase](https://fluid-showcase-gin-fnb4haeufyhddedt.centralus-01.azurewebsites.net/?demo=playground&doc=fluid-open-demo-0603) | The deployed canvas: shared rooms, presence, AI proposals, and human-controlled commit |
